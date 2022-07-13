@@ -3,6 +3,7 @@ package br.com.surb.dsmeta.modules.Sale.infra.entities;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -21,11 +22,11 @@ public class Sale implements Serializable {
   private Integer visited;
   private Integer deals;
   private Double amount;
-  private LocalDateTime date;
+  private LocalDate date;
 
   public Sale(){}
 
-  public Sale(Long id, String sellerName, Integer visited, Integer deals, Double amount, LocalDateTime date) {
+  public Sale(Long id, String sellerName, Integer visited, Integer deals, Double amount, LocalDate date) {
     this.id = id;
     this.sellerName = sellerName;
     this.visited = visited;
@@ -74,19 +75,13 @@ public class Sale implements Serializable {
     this.amount = amount;
   }
 
-  public LocalDateTime getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(LocalDateTime date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
-
-//  @PrePersist
-//  private void prePersist() {
-////    id = UUID.randomUUID().toString();
-////    date = LocalDateTime.now();
-//  }
 
   @Override
   public boolean equals(Object o) {
