@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,10 +18,10 @@ public class SalesFindAllPageResource {
   private SalesFindAllPageService service;
 
   @GetMapping
-  public ResponseEntity<Page<SaleDTO>> handle(Pageable pageable)
-  {
-    /*PARAMETRISE: page, size, direction, sort*/
-    Page<SaleDTO> dto = service.execute(pageable);
+  public ResponseEntity<Page<SaleDTO>> handle(@RequestParam(value = "minDate", defaultValue = "") String minDate,
+                                              @RequestParam(value = "maxDate", defaultValue = "") String maxDate,
+                                              Pageable pageable){
+    Page<SaleDTO> dto = service.execute(minDate, maxDate, pageable);
     return ResponseEntity.ok().body(dto);
   }
 }
