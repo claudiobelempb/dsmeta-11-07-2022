@@ -11,7 +11,7 @@ type TypeButtonProps = {
 const NotificationButton: React.FC<TypeButtonProps> = ({ saleId }) => {
   const handleSaleNotification = async (saleId: number) => {
     await api.get(`/sales/${saleId}/notification`).then(response => {
-      toast.success('MSN enviado com sucesso!');
+      toast.success('SMS enviado com sucesso!');
     });
   };
   return (
