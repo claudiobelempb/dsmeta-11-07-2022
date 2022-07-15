@@ -1,15 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { api } from '../../api';
+import { BASE_URL } from '../../config';
+import { Sale } from '../../types/TypeSale';
 
 import { NotificationButton } from '../NotificationButton';
 import './styles.css';
 
 const SalesCard = () => {
+  const [data, setData] = useState<Sale>();
+
   const min = new Date(new Date().setDate(new Date().getDate() - 365));
   const max = new Date();
   const [minDate, setMinDate] = useState(min);
   const [maxDate, setMaxDate] = useState(max);
+
+  useEffect(() => {
+    (async () => {
+      await api(
+        `${BASE_URL}/sales?page=0&size=6&minDate=2021-11-01&maxDate=2021-12-31`
+      ).then(response => {
+        setData(response.data);
+      });
+    })();
+  }, []);
 
   return (
     <div className='dsmeta-card'>
@@ -21,6 +35,11 @@ const SalesCard = () => {
             onChange={(date: Date) => setMinDate(date)}
             className='dsmeta-form-control'
             dateFormat='dd/MM/yyyy'
+            isClearable
+            showTimeSelect
+            selectsStart
+            startDate={minDate}
+            endDate={maxDate}
           />
         </div>
         <div className='dsmeta-form-control-container'>
@@ -29,6 +48,10 @@ const SalesCard = () => {
             onChange={(date: Date) => setMaxDate(date)}
             className='dsmeta-form-control'
             dateFormat='dd/MM/yyyy'
+            isClearable
+            selectsEnd
+            startDate={maxDate}
+            endDate={maxDate}
           />
         </div>
       </div>
@@ -46,51 +69,25 @@ const SalesCard = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className='show992'>#341</td>
-              <td className='show576'>08/07/2022</td>
-              <td>Anakin</td>
-              <td className='show992'>15</td>
-              <td className='show992'>11</td>
-              <td>R$ 55300.00</td>
-              <td>
-                <div className='dsmeta-red-btn-container'>
-                  <div className='dsmeta-red-btn'>
-                    <NotificationButton />
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className='show992'>#341</td>
-              <td className='show576'>08/07/2022</td>
-              <td>Anakin</td>
-              <td className='show992'>15</td>
-              <td className='show992'>11</td>
-              <td>R$ 55300.00</td>
-              <td>
-                <div className='dsmeta-red-btn-container'>
-                  <div className='dsmeta-red-btn'>
-                    <NotificationButton />
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className='show992'>#341</td>
-              <td className='show576'>08/07/2022</td>
-              <td>Anakin</td>
-              <td className='show992'>15</td>
-              <td className='show992'>11</td>
-              <td>R$ 55300.00</td>
-              <td>
-                <div className='dsmeta-red-btn-container'>
-                  <div className='dsmeta-red-btn'>
-                    <NotificationButton />
-                  </div>
-                </div>
-              </td>
-            </tr>
+            {data?.content.map(value => {
+              return (
+                <tr key={value.id}>
+                  <td className='show992'>{value.id}</td>
+                  <td className='show576'>{value.date}</td>
+                  <td>{value.sellerName}</td>
+                  <td className='show992'>{value.visited}</td>
+                  <td className='show992'>{value.deals}</td>
+                  <td>R$ {value.amount}</td>
+                  <td>
+                    <div className='dsmeta-red-btn-container'>
+                      <div className='dsmeta-red-btn'>
+                        <NotificationButton />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
