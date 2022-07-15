@@ -9,5 +9,5 @@ export const FormatDate = (date: string) => {
 };
 
 export const FormatIso8601 = (date: Date) => {
-  return moment(date).format('yyyy-MM-DDThh:mm:ss.000Z');
+  return date.toISOString().slice(0, 10);
 };

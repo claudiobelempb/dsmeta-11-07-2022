@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { api } from '../../service/api';
 import { TypeSale } from '../../types/TypeSale';
-import { FormatDate } from '../../utils/FormatDate';
+import { FormatDate, FormatIso8601 } from '../../utils/FormatDate';
 
 import { NotificationButton } from '../NotificationButton';
 import './styles.css';
@@ -17,13 +17,16 @@ const SalesCard = () => {
 
   useEffect(() => {
     (async () => {
-      await api(
-        `/sales?page=0&size=6&minDate=2021-11-01&maxDate=2021-12-31`
-      ).then(response => {
-        setData(response.data.content);
-      });
+      const dmin = FormatIso8601(minDate);
+      const dmax = FormatIso8601(maxDate);
+      console.log(dmin);
+      await api(`/sales?page=0&size=6&minDate=${dmin}&maxDate=${dmax}`).then(
+        response => {
+          setData(response.data.content);
+        }
+      );
     })();
-  }, []);
+  }, [minDate, maxDate]);
 
   return (
     <div className='dsmeta-card'>
