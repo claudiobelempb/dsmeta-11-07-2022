@@ -9,7 +9,6 @@ import './styles.css';
 
 const SalesCard = () => {
   const [data, setData] = useState<TypeSale[]>([]);
-  console.log(data);
   const min = new Date(new Date().setDate(new Date().getDate() - 365));
   const max = new Date();
   const [minDate, setMinDate] = useState(min);
@@ -84,7 +83,7 @@ const SalesCard = () => {
                   <td>
                     <div className='dsmeta-red-btn-container'>
                       <div className='dsmeta-red-btn'>
-                        <NotificationButton />
+                        <NotificationButton saleId={value.id} />
                       </div>
                     </div>
                   </td>
