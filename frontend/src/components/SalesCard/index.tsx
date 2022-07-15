@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { api } from '../../api';
-import { BASE_URL } from '../../config';
-import { Sale } from '../../types/TypeSale';
+import { api } from '../../service/api';
+import { TypeSale } from '../../types/TypeSale';
+import { FormatDate } from '../../utils/FormatDate';
 
 import { NotificationButton } from '../NotificationButton';
 import './styles.css';
 
 const SalesCard = () => {
-  const [data, setData] = useState<Sale>();
-
+  const [data, setData] = useState<TypeSale[]>([]);
+  console.log(data);
   const min = new Date(new Date().setDate(new Date().getDate() - 365));
   const max = new Date();
   const [minDate, setMinDate] = useState(min);
@@ -18,9 +18,9 @@ const SalesCard = () => {
   useEffect(() => {
     (async () => {
       await api(
-        `${BASE_URL}/sales?page=0&size=6&minDate=2021-11-01&maxDate=2021-12-31`
+        `/sales?page=0&size=6&minDate=2021-11-01&maxDate=2021-12-31`
       ).then(response => {
-        setData(response.data);
+        setData(response.data.content);
       });
     })();
   }, []);
@@ -69,15 +69,15 @@ const SalesCard = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.content.map(value => {
+            {data?.map(value => {
               return (
                 <tr key={value.id}>
                   <td className='show992'>{value.id}</td>
-                  <td className='show576'>{value.date}</td>
+                  <td className='show576'>{FormatDate(value.date)}</td>
                   <td>{value.sellerName}</td>
                   <td className='show992'>{value.visited}</td>
                   <td className='show992'>{value.deals}</td>
-                  <td>R$ {value.amount}</td>
+                  <td>R$ {value.amount.toFixed(2)}</td>
                   <td>
                     <div className='dsmeta-red-btn-container'>
                       <div className='dsmeta-red-btn'>
