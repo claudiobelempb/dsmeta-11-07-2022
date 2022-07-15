@@ -38,10 +38,6 @@ const SalesCard = () => {
             className='dsmeta-form-control'
             dateFormat='dd/MM/yyyy'
             isClearable
-            showTimeSelect
-            selectsStart
-            startDate={minDate}
-            endDate={maxDate}
           />
         </div>
         <div className='dsmeta-form-control-container'>
@@ -51,9 +47,6 @@ const SalesCard = () => {
             className='dsmeta-form-control'
             dateFormat='dd/MM/yyyy'
             isClearable
-            selectsEnd
-            startDate={maxDate}
-            endDate={maxDate}
           />
         </div>
       </div>
